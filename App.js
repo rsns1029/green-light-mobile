@@ -7,7 +7,8 @@ import { NavigationContainer } from "@react-navigation/native";
 // import LoggedOutNav from "./navigators/LoggedOutNav";
 import * as SplashScreen from "expo-splash-screen";
 import { ApolloProvider, useReactiveVar } from "@apollo/client";
-// import client, { isLoggedInVar, tokenVar, cache } from "./apollo";
+import client, { isLoggedInVar, tokenVar, cache } from "./apollo";
+// import { isLoggedInVar } from "./apollo";
 // import LoggedInNav from "./navigators/LoggedInNav";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AsyncStorageWrapper, persistCache } from "apollo3-cache-persist";
@@ -15,7 +16,7 @@ import { AsyncStorageWrapper, persistCache } from "apollo3-cache-persist";
 SplashScreen.preventAutoHideAsync();
 export default function App() {
   const [ready, setReady] = useState(false);
-  // const isLoggedIn = useReactiveVar(isLoggedInVar);
+  const isLoggedIn = useReactiveVar(isLoggedInVar);
 
   const startLoading = () => {
     const fontsToLoad = [Ionicons.font];
@@ -67,11 +68,14 @@ export default function App() {
   if (!ready) {
     return null;
   }
+  console.log("isLoggedIn : ", isLoggedIn);
 
   return (
-    <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
-      <StatusBar hidden={false} />
-      <Text>Open up App.js to start working on your app!!!!!!!!</Text>
-    </View>
+    <ApolloProvider client={client}>
+      <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
+        <StatusBar hidden={false} />
+        <Text>Open up App.js to start working on your app!!!!!!!!</Text>
+      </View>
+    </ApolloProvider>
   );
 }

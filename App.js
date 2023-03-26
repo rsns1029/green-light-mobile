@@ -1,8 +1,8 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, useContext } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import * as Font from "expo-font";
 import { Asset } from "expo-asset";
-import { StatusBar, View, Text } from "react-native";
+import { StatusBar, View, Text, useColorScheme } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 // import LoggedOutNav from "./navigators/LoggedOutNav";
 import * as SplashScreen from "expo-splash-screen";
@@ -12,8 +12,12 @@ import client, { isLoggedInVar, tokenVar, cache } from "./apollo";
 // import LoggedInNav from "./navigators/LoggedInNav";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AsyncStorageWrapper, persistCache } from "apollo3-cache-persist";
+import { ThemeProvider, ThemeContext } from "styled-components/native";
+import { darkTheme, lightTheme } from "./styles";
+import LoggedOutNav from "./navigators/LoggedOutNav";
 
 SplashScreen.preventAutoHideAsync();
+
 export default function App() {
   const [ready, setReady] = useState(false);
   const isLoggedIn = useReactiveVar(isLoggedInVar);
@@ -33,8 +37,8 @@ export default function App() {
     const token = await AsyncStorage.getItem("token");
     if (token) {
       console.log("token : ", token);
-      // isLoggedInVar(true);
-      // tokenVar(token);
+      isLoggedInVar(true);
+      tokenVar(token);
     }
 
     return startLoading();
@@ -65,17 +69,29 @@ export default function App() {
     }
   }, [ready]);
 
+  const isDark = useColorScheme() === "dark";
+
+  const MyTheme = {
+    colors: {
+      background: isDark ? darkTheme.bgColor : lightTheme.bgColor,
+      text: isDark ? darkTheme.fontColor : lightTheme.fontColor,
+    },
+  };
+
   if (!ready) {
     return null;
   }
-  console.log("isLoggedIn : ", isLoggedIn);
 
   return (
     <ApolloProvider client={client}>
-      <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
-        <StatusBar hidden={false} />
-        <Text>Open up App.js to start working on your app!!!!!!!!</Text>
-      </View>
+      <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
+        <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
+          <StatusBar hidden={false} />
+          <NavigationContainer theme={MyTheme}>
+            <LoggedOutNav />
+          </NavigationContainer>
+        </View>
+      </ThemeProvider>
     </ApolloProvider>
   );
 }

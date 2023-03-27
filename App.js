@@ -13,7 +13,7 @@ import client, { isLoggedInVar, tokenVar, cache } from "./apollo";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AsyncStorageWrapper, persistCache } from "apollo3-cache-persist";
 import { ThemeProvider, ThemeContext } from "styled-components/native";
-import { darkTheme, lightTheme } from "./styles";
+import { darkTheme, lightTheme } from "./styled";
 import LoggedOutNav from "./navigators/LoggedOutNav";
 
 SplashScreen.preventAutoHideAsync();
@@ -70,6 +70,7 @@ export default function App() {
   }, [ready]);
 
   const isDark = useColorScheme() === "dark";
+  console.log("isDark : ", useColorScheme());
 
   const MyTheme = {
     colors: {

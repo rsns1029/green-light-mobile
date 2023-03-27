@@ -1,9 +1,9 @@
 export const lightTheme = {
-  bgColor: "#FAFAFA",
+  bgColor: "white",
   fontColor: "rgb(38, 38, 38)",
 };
 
 export const darkTheme = {
-  fontColor: "white",
   bgColor: "#000",
+  fontColor: "white",
 };

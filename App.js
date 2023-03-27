@@ -1,8 +1,8 @@
-import React, { useCallback, useEffect, useState, useContext } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import * as Font from "expo-font";
 import { Asset } from "expo-asset";
-import { StatusBar, View, Text, useColorScheme } from "react-native";
+import { StatusBar, View, useColorScheme } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 // import LoggedOutNav from "./navigators/LoggedOutNav";
 import * as SplashScreen from "expo-splash-screen";
@@ -87,7 +87,7 @@ export default function App() {
     <ApolloProvider client={client}>
       <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
         <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
-          <StatusBar hidden={false} />
+          <StatusBar hidden={true} />
           <NavigationContainer theme={MyTheme}>
             <LoggedOutNav />
           </NavigationContainer>

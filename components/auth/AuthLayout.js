@@ -45,9 +45,9 @@ export default function AuthLayout({ children }) {
             width: "100%",
             padding: 0,
           }}
-          behavior="padding"
           // keyboardVerticalOffset={Platform.OS === "ios" ? 50 : 0}
-          keyboardVerticalOffset={-100}
+          behavior="padding"
+          keyboardVerticalOffset={150}
         >
           <Logo resizeMode="contain" source={logoSource} />
           {children}

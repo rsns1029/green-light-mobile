@@ -17,8 +17,10 @@ const VALID_CREATE_ACCOUNT = gql`
 `;
 
 export default function StepOne({ navigation }) {
-  const onNext = (nextOne) => {
-    setIsFromKeyboard(true);
+  const onNext = (nextOne, fromKeyboard = true) => {
+    if (fromKeyboard) {
+      setIsFromKeyboard(true);
+    }
     nextOne?.current?.focus();
   };
 
@@ -44,14 +46,15 @@ export default function StepOne({ navigation }) {
         setReservedUsername(username);
         setValidated(true);
         setErrorMsg("");
-        navigation.navigate("StepTwo");
       } else {
         setErrorMsg("Username already exists");
+        setReservedUsername("");
+        setValidated(false);
       }
     },
   });
 
-  const handleNext = async () => {
+  const handleNext = async (nextScreen) => {
     if (validated) {
       console.log("already validated going to screen 2");
       navigation.navigate("StepTwo");
@@ -60,22 +63,22 @@ export default function StepOne({ navigation }) {
     console.log("reservedUsername : ", reservedUsername);
     if (username === "") {
       setErrorMsg("Please write username");
-      onNext(usernameRef);
+      onNext(usernameRef, false);
       return false;
     }
     if (email === "") {
       setErrorMsg("Please write email");
-      onNext(emailRef);
+      onNext(emailRef, false);
       return false;
     }
     if (password === "") {
       setErrorMsg("Please write password");
-      onNext(passwordRef);
+      onNext(passwordRef, false);
       return false;
     }
     if (repassword === "") {
       setErrorMsg("Please rewrite password");
-      onNext(repasswordRef);
+      onNext(repasswordRef, false);
       return false;
     }
     if (password !== repassword) {
@@ -86,6 +89,10 @@ export default function StepOne({ navigation }) {
     await executeQuery({
       variables: { username },
     });
+    if (validated) {
+      return false;
+    }
+    navigation.navigate(nextScreen);
   };
 
   const usernameRef = useRef();
@@ -104,6 +111,7 @@ export default function StepOne({ navigation }) {
           navigation={navigation}
           currentStep={1}
           style={{ marginBottom: 100, flex: 1 }}
+          onBeforeNavigate={handleNext}
         />
       )}
 
@@ -175,8 +183,8 @@ export default function StepOne({ navigation }) {
         <AuthButton
           text="Next"
           disabled={false}
-          onPress={handleNext}
           loading={loading}
+          onPress={() => handleNext("StepTwo")}
         />
       </AuthLayout>
     </View>

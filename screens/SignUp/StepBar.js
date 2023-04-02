@@ -1,12 +1,7 @@
 import React from "react";
 import styled from "styled-components/native";
 import { colors } from "../../colors";
-import {
-  Keyboard,
-  Platform,
-  Text,
-  TouchableWithoutFeedback,
-} from "react-native";
+import { Keyboard, Platform, TouchableWithoutFeedback } from "react-native";
 
 const Container = styled.View`
   margin-top : 20px
@@ -20,18 +15,28 @@ const StepBtn = styled.TouchableOpacity`
   margin-right: 10px;
 `;
 
-export default function StepBar({ navigation, currentStep }) {
+const Text = styled.Text`
+  color: white;
+`;
+
+export default function StepBar({ navigation, currentStep, onBeforeNavigate }) {
   const handlePressStepOne = () => {
-    navigation.navigate("StepOne");
+    if (currentStep !== 1) {
+      onBeforeNavigate("StepOne");
+    }
   };
 
   const handlePressStepTwo = () => {
-    navigation.navigate("StepTwo");
+    if (currentStep !== 2) {
+      onBeforeNavigate("StepTwo");
+    }
+  };
+  const handlePressStepThree = () => {
+    if (currentStep !== 3) {
+      onBeforeNavigate("StepThree");
+    }
   };
 
-  const handlePressStepThree = () => {
-    navigation.navigate("StepThree");
-  };
   const dismissKeyboard = () => {
     Keyboard.dismiss();
   };
@@ -48,7 +53,7 @@ export default function StepBar({ navigation, currentStep }) {
             backgroundColor: currentStep === 1 ? colors.green : "gray",
           }}
         >
-          <Text style={{ color: "white" }}> 1 </Text>
+          <Text> 1 </Text>
         </StepBtn>
         <StepBtn
           onPress={handlePressStepTwo}
@@ -56,7 +61,7 @@ export default function StepBar({ navigation, currentStep }) {
             backgroundColor: currentStep === 2 ? colors.green : "gray",
           }}
         >
-          <Text style={{ color: "white" }}> 2 </Text>
+          <Text> 2 </Text>
         </StepBtn>
         <StepBtn
           onPress={handlePressStepThree}
@@ -64,7 +69,7 @@ export default function StepBar({ navigation, currentStep }) {
             backgroundColor: currentStep === 3 ? colors.green : "gray",
           }}
         >
-          <Text style={{ color: "white" }}> 3 </Text>
+          <Text> 3 </Text>
         </StepBtn>
       </Container>
     </TouchableWithoutFeedback>

@@ -70,7 +70,6 @@ export default function App() {
   }, [ready]);
 
   const isDark = useColorScheme() === "dark";
-  console.log("isDark : ", useColorScheme());
 
   const MyTheme = {
     colors: {

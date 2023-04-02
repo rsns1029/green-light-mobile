@@ -1,32 +1,28 @@
-import React, { useRef } from "react";
-import { gql, useMutation } from "@apollo/client";
-import { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import AuthButton from "../components/auth/AuthButton";
-import AuthLayout from "../components/auth/AuthLayout";
-import { TextInput } from "../components/auth/AuthShared";
+import React, { useRef, useState } from "react";
+import { createStackNavigator } from "@react-navigation/stack";
+import StepOne from "./SignUp/StepOne";
+import StepTwo from "./SignUp/StepTwo";
+import StepThree from "./SignUp/StepThree";
+import { SignUpAppContextProvider } from "./SignUp/SignUpContext";
+
+const Stack = createStackNavigator();
 
 export default function CreateAccount() {
-  const { register, handleSubmit, setValue, getValues } = useForm();
-  const lastNameRef = useRef();
-  const usernameRef = useRef();
   return (
-    <AuthLayout>
-      <TextInput
-        placeholder="First Name"
-        returnKeyType="next"
-        onSubmitEditing={() => onNext(lastNameRef)}
-        placeholderTextColor={"rgba(255, 255, 255, 0.6)"}
-        onChangeText={(text) => setValue("firstName", text)}
-      />
-      <TextInput
-        ref={lastNameRef}
-        placeholder="Last Name"
-        returnKeyType="next"
-        onSubmitEditing={() => onNext(usernameRef)}
-        placeholderTextColor={"rgba(255, 255, 255, 0.6)"}
-        onChangeText={(text) => setValue("lastName", text)}
-      />
-    </AuthLayout>
+    <SignUpAppContextProvider>
+      <Stack.Navigator
+        screenOptions={{
+          headerBackTitleVisible: false,
+          headerTitle: false,
+          headerShown: true,
+          headerTintColor: "white",
+          headerTitle: "Create Account",
+        }}
+      >
+        <Stack.Screen name="StepOne" component={StepOne} />
+        <Stack.Screen name="StepTwo" component={StepTwo} />
+        <Stack.Screen name="StepThree" component={StepThree} />
+      </Stack.Navigator>
+    </SignUpAppContextProvider>
   );
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import Welcome from "../screens/Welcome";
 import LogIn from "../screens/LogIn";
@@ -25,7 +25,7 @@ export default function LoggedOutNav() {
       />
       <Stack.Screen name="LogIn" component={LogIn} />
       <Stack.Screen
-        options={{ title: "Create New Account" }}
+        options={{ headerShown: false }}
         name="CreateAccount"
         component={CreateAccount}
       />

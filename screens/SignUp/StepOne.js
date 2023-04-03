@@ -34,33 +34,47 @@ export default function StepOne({ navigation }) {
   const [validated, setValidated] = useState(false);
   const [isTextInputFocused, setIsTextInputFocused] = useState(false);
   const [isFromKeyboard, setIsFromKeyboard] = useState(false);
+  const [nextScreen, setNextScreen] = useState("");
 
   const handleInputChange = (setFunction, value) => {
     setFunction(value);
     setValidated(false);
   };
 
-  const [executeQuery, { loading, data }] = useLazyQuery(VALID_CREATE_ACCOUNT, {
-    onCompleted: (data) => {
-      if (data?.validCreateAccount?.ok) {
-        setReservedUsername(username);
-        setValidated(true);
-        setErrorMsg("");
-      } else {
-        setErrorMsg("Username already exists");
-        setReservedUsername("");
-        setValidated(false);
-      }
-    },
-  });
+  const [executeQuery, { loading, data, error }] = useLazyQuery(
+    VALID_CREATE_ACCOUNT,
+    {
+      onCompleted: (data) => {
+        if (data?.validCreateAccount?.ok) {
+          setReservedUsername(username);
+          setValidated(true);
+          setErrorMsg("");
+          navigation.navigate(nextScreen);
+        } else {
+          setErrorMsg("Username already exists");
+          setReservedUsername("");
+          setValidated(false);
+        }
+      },
+      onError: (error) => {
+        console.log(error);
+        setErrorMsg("Network issue");
+      },
+    }
+  );
 
-  const handleNext = async (nextScreen) => {
+  const handleNext = (nextPage) => {
+    setNextScreen(nextPage);
+    handleNextFn();
+  };
+
+  const handleNextFn = async () => {
     if (validated) {
       console.log("already validated going to screen 2");
       navigation.navigate("StepTwo");
       return true;
     }
-    console.log("reservedUsername : ", reservedUsername);
+
     if (username === "") {
       setErrorMsg("Please write username");
       onNext(usernameRef, false);
@@ -89,10 +103,6 @@ export default function StepOne({ navigation }) {
     await executeQuery({
       variables: { username },
     });
-    if (validated) {
-      return false;
-    }
-    navigation.navigate(nextScreen);
   };
 
   const usernameRef = useRef();
@@ -184,7 +194,7 @@ export default function StepOne({ navigation }) {
           text="Next"
           disabled={false}
           loading={loading}
-          onPress={() => handleNext("StepTwo")}
+          onPress={async () => handleNext("StepTwo")}
         />
       </AuthLayout>
     </View>

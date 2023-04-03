@@ -9,14 +9,7 @@ export default function StepTwo() {
   }, []);
 
   return (
-    <View
-      style={{
-        backgroundColor: "black",
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
+    <View style={{ flex: 1 }}>
       <Text style={{ color: "white" }}>Notifications</Text>
     </View>
   );

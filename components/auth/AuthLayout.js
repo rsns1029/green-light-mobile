@@ -21,7 +21,6 @@ const Logo = styled.Image`
   width: 100%;
   height: 100px;
   margin: 0 auto;
-  margin-bottom: 50px;
 `;
 
 export default function AuthLayout({ children }) {
@@ -47,7 +46,7 @@ export default function AuthLayout({ children }) {
           }}
           // keyboardVerticalOffset={Platform.OS === "ios" ? 50 : 0}
           behavior="padding"
-          keyboardVerticalOffset={170}
+          keyboardVerticalOffset={50}
         >
           <Logo resizeMode="contain" source={logoSource} />
           {children}

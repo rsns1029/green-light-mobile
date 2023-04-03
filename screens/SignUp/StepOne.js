@@ -8,32 +8,27 @@ import StepBar from "./StepBar";
 import { SignUpAppContext } from "./SignUpContext";
 
 const VALID_CREATE_ACCOUNT = gql`
-  query ValidCreateAccount($username: String) {
-    validCreateAccount(username: $username) {
+  query ValidCreateAccount($username: String, $nextPage: String) {
+    validCreateAccount(username: $username, nextPage: $nextPage) {
       ok
       error
+      nextPage
     }
   }
 `;
 
 export default function StepOne({ navigation }) {
-  const onNext = (nextOne, fromKeyboard = true) => {
-    if (fromKeyboard) {
-      setIsFromKeyboard(true);
-    }
+  const onNext = (nextOne) => {
     nextOne?.current?.focus();
   };
 
   const { username, setUsername } = useContext(SignUpAppContext);
   const { reservedUsername, setReservedUsername } =
     useContext(SignUpAppContext);
-  const { email, setEmail } = useContext(SignUpAppContext);
   const { password, setPassword } = useContext(SignUpAppContext);
   const { repassword, setRepassword } = useContext(SignUpAppContext);
   const [errorMsg, setErrorMsg] = useState("");
   const [validated, setValidated] = useState(false);
-  const [isTextInputFocused, setIsTextInputFocused] = useState(false);
-  const [isFromKeyboard, setIsFromKeyboard] = useState(false);
 
   const handleInputChange = (setFunction, value) => {
     setFunction(value);
@@ -41,13 +36,15 @@ export default function StepOne({ navigation }) {
   };
 
   const [executeQuery, { loading }] = useLazyQuery(VALID_CREATE_ACCOUNT, {
-    onCompleted: (data, context) => {
-      const { nextScreen } = context;
+    onCompleted: (data) => {
       if (data?.validCreateAccount?.ok) {
+        console.log(data);
         setReservedUsername(username);
         setValidated(true);
         setErrorMsg("");
-        navigation.navigate(nextScreen);
+        if (data.validCreateAccount.nextPage) {
+          navigation.navigate(data.validCreateAccount.nextPage);
+        }
       } else {
         setErrorMsg("Username already exists");
         setReservedUsername("");
@@ -61,23 +58,14 @@ export default function StepOne({ navigation }) {
   });
 
   const handleNext = async (nextPage) => {
-    console.log("nextPage : ", nextPage);
-    setNextScreen(nextPage);
-    console.log("nextScreen : ", nextScreen);
     if (validated) {
-      console.log("already validated going to screen ", nextScreen);
-      navigation.navigate(nextScreen);
+      navigation.navigate(nextPage);
       return true;
     }
 
     if (username === "") {
       setErrorMsg("Please write username");
       onNext(usernameRef, false);
-      return false;
-    }
-    if (email === "") {
-      setErrorMsg("Please write email");
-      onNext(emailRef, false);
       return false;
     }
     if (password === "") {
@@ -96,61 +84,50 @@ export default function StepOne({ navigation }) {
       return false;
     }
     await executeQuery({
-      variables: { username },
-      context: { nextScreen: nextPage },
+      variables: { username, nextPage },
     });
   };
 
   const usernameRef = useRef();
-  const emailRef = useRef();
   const passwordRef = useRef();
   const repasswordRef = useRef();
+
+  const HeaderBar = () => (
+    <StepBar
+      navigation={navigation}
+      currentStep={1}
+      style={{ marginBottom: 100, flex: 1 }}
+      onBeforeNavigate={handleNext}
+    />
+  );
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerTitle: HeaderBar,
+    });
+  }, []);
 
   useEffect(() => {
     // console.log("username : ", username);
   }, []);
-
-  return (
-    <View style={{ flex: 1 }}>
-      {!isTextInputFocused && (
+  /* {!isTextInputFocused && (
         <StepBar
           navigation={navigation}
           currentStep={1}
           style={{ marginBottom: 100, flex: 1 }}
           onBeforeNavigate={handleNext}
         />
-      )}
-
-      <AuthLayout style={{ flex: 3 }}>
+      )} */
+  return (
+    <AuthLayout>
+      <View style={{}}>
         <TextInput
           ref={usernameRef}
           placeholder="User Name"
           returnKeyType="next"
-          onSubmitEditing={() => onNext(emailRef)}
-          placeholderTextColor={"rgba(255, 255, 255, 0.6)"}
-          onChangeText={(text) => handleInputChange(setUsername, text)}
-          onFocus={() => setIsTextInputFocused(true)}
-          onBlur={() => {
-            if (!isFromKeyboard) {
-              setIsTextInputFocused(false);
-            }
-            setIsFromKeyboard(false);
-          }}
-        />
-        <TextInput
-          ref={emailRef}
-          placeholder="Email"
-          returnKeyType="next"
           onSubmitEditing={() => onNext(passwordRef)}
           placeholderTextColor={"rgba(255, 255, 255, 0.6)"}
-          onChangeText={(text) => handleInputChange(setEmail, text)}
-          onFocus={() => setIsTextInputFocused(true)}
-          onBlur={() => {
-            if (!isFromKeyboard) {
-              setIsTextInputFocused(false);
-            }
-            setIsFromKeyboard(false);
-          }}
+          onChangeText={(text) => handleInputChange(setUsername, text)}
         />
         <TextInput
           ref={passwordRef}
@@ -160,13 +137,6 @@ export default function StepOne({ navigation }) {
           placeholderTextColor={"rgba(255, 255, 255, 0.6)"}
           onChangeText={(text) => handleInputChange(setPassword, text)}
           secureTextEntry
-          onFocus={() => setIsTextInputFocused(true)}
-          onBlur={() => {
-            if (!isFromKeyboard) {
-              setIsTextInputFocused(false);
-            }
-            setIsFromKeyboard(false);
-          }}
         />
         <TextInput
           ref={repasswordRef}
@@ -174,25 +144,21 @@ export default function StepOne({ navigation }) {
           returnKeyType="done"
           placeholderTextColor={"rgba(255, 255, 255, 0.6)"}
           onChangeText={(text) => handleInputChange(setRepassword, text)}
+          lastOne={true}
           secureTextEntry
-          onFocus={() => setIsTextInputFocused(true)}
-          onBlur={() => {
-            if (!isFromKeyboard) {
-              setIsTextInputFocused(false);
-            }
-            setIsFromKeyboard(false);
-          }}
         />
         {errorMsg !== "" && (
           <Text style={{ color: "red", marginBottom: 10 }}>{errorMsg}</Text>
         )}
+      </View>
+      <View style={{}}>
         <AuthButton
           text="Next"
           disabled={false}
           loading={loading}
           onPress={async () => handleNext("StepTwo")}
         />
-      </AuthLayout>
-    </View>
+      </View>
+    </AuthLayout>
   );
 }

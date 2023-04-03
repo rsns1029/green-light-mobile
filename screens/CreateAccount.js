@@ -13,7 +13,6 @@ export default function CreateAccount() {
       <Stack.Navigator
         screenOptions={{
           headerBackTitleVisible: false,
-          headerTitle: false,
           headerShown: true,
           headerTintColor: "white",
           headerTitle: "Create Account",

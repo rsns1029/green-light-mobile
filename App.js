@@ -86,7 +86,7 @@ export default function App() {
     <ApolloProvider client={client}>
       <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
         <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
-          <StatusBar hidden={true} />
+          <StatusBar hidden={false} />
           <NavigationContainer theme={MyTheme}>
             <LoggedOutNav />
           </NavigationContainer>

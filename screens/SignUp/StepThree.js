@@ -11,7 +11,7 @@ export default function StepThree() {
         justifyContent: "center",
       }}
     >
-      <Text style={{ color: "white" }}>Notifications</Text>
+      <Text style={{ color: "white" }}>step3</Text>
     </View>
   );
 }

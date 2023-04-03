@@ -34,44 +34,39 @@ export default function StepOne({ navigation }) {
   const [validated, setValidated] = useState(false);
   const [isTextInputFocused, setIsTextInputFocused] = useState(false);
   const [isFromKeyboard, setIsFromKeyboard] = useState(false);
-  const [nextScreen, setNextScreen] = useState("");
 
   const handleInputChange = (setFunction, value) => {
     setFunction(value);
     setValidated(false);
   };
 
-  const [executeQuery, { loading, data, error }] = useLazyQuery(
-    VALID_CREATE_ACCOUNT,
-    {
-      onCompleted: (data) => {
-        if (data?.validCreateAccount?.ok) {
-          setReservedUsername(username);
-          setValidated(true);
-          setErrorMsg("");
-          navigation.navigate(nextScreen);
-        } else {
-          setErrorMsg("Username already exists");
-          setReservedUsername("");
-          setValidated(false);
-        }
-      },
-      onError: (error) => {
-        console.log(error);
-        setErrorMsg("Network issue");
-      },
-    }
-  );
+  const [executeQuery, { loading }] = useLazyQuery(VALID_CREATE_ACCOUNT, {
+    onCompleted: (data, context) => {
+      const { nextScreen } = context;
+      if (data?.validCreateAccount?.ok) {
+        setReservedUsername(username);
+        setValidated(true);
+        setErrorMsg("");
+        navigation.navigate(nextScreen);
+      } else {
+        setErrorMsg("Username already exists");
+        setReservedUsername("");
+        setValidated(false);
+      }
+    },
+    onError: (error) => {
+      console.log(error);
+      setErrorMsg("Network issue");
+    },
+  });
 
-  const handleNext = (nextPage) => {
+  const handleNext = async (nextPage) => {
+    console.log("nextPage : ", nextPage);
     setNextScreen(nextPage);
-    handleNextFn();
-  };
-
-  const handleNextFn = async () => {
+    console.log("nextScreen : ", nextScreen);
     if (validated) {
-      console.log("already validated going to screen 2");
-      navigation.navigate("StepTwo");
+      console.log("already validated going to screen ", nextScreen);
+      navigation.navigate(nextScreen);
       return true;
     }
 
@@ -102,6 +97,7 @@ export default function StepOne({ navigation }) {
     }
     await executeQuery({
       variables: { username },
+      context: { nextScreen: nextPage },
     });
   };
 

@@ -10,7 +10,7 @@ export default function StepTwo() {
 
   return (
     <View style={{ flex: 1 }}>
-      <Text style={{ color: "white" }}>Notifications</Text>
+      <Text style={{ color: "white" }}>step2</Text>
     </View>
   );
 }

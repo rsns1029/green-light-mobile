@@ -16,6 +16,8 @@ export default function CreateAccount() {
           headerShown: true,
           headerTintColor: "white",
           headerTitle: "Create Account",
+          headerTitleAlign: "center",
+          headerLeft: () => null,
         }}
       >
         <Stack.Screen name="StepOne" component={StepOne} />

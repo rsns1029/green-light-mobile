@@ -151,7 +151,7 @@ export default function StepOne({ navigation }) {
           <Text style={{ color: "red", marginBottom: 10 }}>{errorMsg}</Text>
         )}
       </View>
-      <View style={{}}>
+      <View style={{ marginBottom: 150 }}>
         <AuthButton
           text="Next"
           disabled={false}

@@ -8,6 +8,7 @@ const SignUpAppContextProvider = ({ children }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repassword, setRepassword] = useState("");
+  const [gender, setGender] = useState("");
 
   const contextValue = {
     username,
@@ -20,6 +21,8 @@ const SignUpAppContextProvider = ({ children }) => {
     setPassword,
     repassword,
     setRepassword,
+    gender,
+    setGender,
   };
 
   return (

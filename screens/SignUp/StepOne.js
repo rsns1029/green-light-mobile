@@ -97,7 +97,7 @@ export default function StepOne({ navigation }) {
       navigation={navigation}
       currentStep={1}
       style={{ marginBottom: 100, flex: 1 }}
-      onBeforeNavigate={handleNext}
+      onBeforeNavigate={() => navigation.navigate("StepTwo")} // temp onBeforeNavigate={handleNext}
     />
   );
 
@@ -120,7 +120,7 @@ export default function StepOne({ navigation }) {
       )} */
   return (
     <AuthLayout>
-      <View style={{}}>
+      <View style={{ marginBottom: 50 }}>
         <TextInput
           ref={usernameRef}
           placeholder="User Name"
@@ -151,7 +151,7 @@ export default function StepOne({ navigation }) {
           <Text style={{ color: "red", marginBottom: 10 }}>{errorMsg}</Text>
         )}
       </View>
-      <View style={{ marginBottom: 150 }}>
+      <View style={{ marginBottom: 150, width: "85%", alignSelf: "center" }}>
         <AuthButton
           text="Next"
           disabled={false}

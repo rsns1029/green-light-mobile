@@ -1,5 +1,5 @@
 import React, { useEffect, useContext, useState } from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import { SignUpAppContext } from "./SignUpContext";
 import AuthButton from "../../components/auth/AuthButton";
 import AuthLayout from "../../components/auth/AuthLayout";
@@ -12,8 +12,17 @@ const Container = styled.View`
   align-items: center;
   justify-content: center;
   flex-direction: row;
-  margin-top: 90px;
-  margin-bottom: 150px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+`;
+
+const BtnContainer = styled.View`
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  margin-bottom: 100px;
+  width: 85%;
+  align-self: center;
 `;
 
 const Button = styled.TouchableOpacity`
@@ -22,13 +31,19 @@ const Button = styled.TouchableOpacity`
   border-radius: 10px;
   margin: 10px;
   padding: 20px;
-  width: 150px;
+  width: 40%;
 
   ${(props) =>
     props.isSelected &&
     css`
       background-color: ${colors.green};
     `}
+`;
+
+const ErrorText = styled.Text`
+  color: red;
+  margin-bottom: 10px;
+  align-self: center;
 `;
 
 const GenderIcon = styled(Icon)`
@@ -58,14 +73,22 @@ const GenderButton = ({ icon, label, onPress, isSelected }) => {
 };
 
 export default function StepTwo({ navigation }) {
-  const { username, setUsername } = useContext(SignUpAppContext);
   const { gender, setGender } = useContext(SignUpAppContext);
-
   const [selectedGender, setSelectedGender] = useState(gender);
+  const [errorMsg, setErrorMsg] = useState("");
 
   const handleGenderSelection = (g) => {
     setSelectedGender(g);
     setGender(g);
+    setErrorMsg("");
+  };
+
+  const handleNext = () => {
+    if (gender == null || gender == "") {
+      setErrorMsg("Please, select the gender");
+      return false;
+    }
+    navigation.navigate("StepThree");
   };
 
   const HeaderBar = () => (
@@ -73,12 +96,11 @@ export default function StepTwo({ navigation }) {
       navigation={navigation}
       currentStep={2}
       style={{ marginBottom: 100, flex: 1 }}
-      onBeforeNavigate={null}
+      onBeforeNavigate={handleNext}
     />
   );
 
   useEffect(() => {
-    console.log("gender : ", gender);
     navigation.setOptions({
       headerTitle: HeaderBar,
     });
@@ -100,6 +122,10 @@ export default function StepTwo({ navigation }) {
           isSelected={selectedGender === "F"}
         />
       </Container>
+      {errorMsg !== "" && <ErrorText>{errorMsg}</ErrorText>}
+      <BtnContainer>
+        <AuthButton text="Next" disabled={false} onPress={handleNext} />
+      </BtnContainer>
     </AuthLayout>
   );
 }

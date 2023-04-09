@@ -1,13 +1,16 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import StepOne from "./SignUp/StepOne";
 import StepTwo from "./SignUp/StepTwo";
 import StepThree from "./SignUp/StepThree";
 import { SignUpAppContextProvider } from "./SignUp/SignUpContext";
+import { Button, Text, TouchableOpacity } from "react-native";
+import { Alert } from "react-native";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 const Stack = createStackNavigator();
 
-export default function CreateAccount() {
+export default function CreateAccount({ navigation }) {
   return (
     <SignUpAppContextProvider>
       <Stack.Navigator
@@ -17,7 +20,36 @@ export default function CreateAccount() {
           headerTintColor: "white",
           headerTitle: "Create Account",
           headerTitleAlign: "center",
-          headerLeft: () => null,
+          headerLeft: () => {
+            return (
+              <TouchableOpacity
+                style={{
+                  justifyContent: "center",
+                  marginTop: 20,
+                  height: 40,
+                  width: 40,
+                }}
+                onPress={() => {
+                  Alert.alert(
+                    "Are you sure?",
+                    "Are you sure you want to go back? Any unsaved changes will be lost.",
+                    [
+                      {
+                        text: "Cancel",
+                        onPress: () => {},
+                      },
+                      {
+                        text: "OK",
+                        onPress: () => navigation.navigate("Welcome"),
+                      },
+                    ]
+                  );
+                }}
+              >
+                <Icon name="chevron-left" size={20} color="white" />
+              </TouchableOpacity>
+            );
+          },
         }}
       >
         <Stack.Screen name="StepOne" component={StepOne} />

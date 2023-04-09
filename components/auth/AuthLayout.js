@@ -4,6 +4,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   TouchableWithoutFeedback,
+  View,
   useColorScheme,
 } from "react-native";
 import styled from "styled-components/native";
@@ -20,10 +21,11 @@ const Logo = styled.Image`
   max-width: 50%;
   width: 100%;
   height: 100px;
-  margin: 0 auto;
+  margin: 10px;
+  align-self: center;
 `;
 
-export default function AuthLayout({ children }) {
+export default function AuthLayout({ children, flexSize }) {
   const isDark = useColorScheme() === "dark";
   const logoSource = isDark
     ? require("../../assets/glLogo-dark.png")
@@ -43,13 +45,14 @@ export default function AuthLayout({ children }) {
           style={{
             width: "100%",
             padding: 0,
+            flex: 1,
           }}
           // keyboardVerticalOffset={Platform.OS === "ios" ? 50 : 0}
           behavior="padding"
           keyboardVerticalOffset={50}
         >
           <Logo resizeMode="contain" source={logoSource} />
-          {children}
+          <View style={{ flex: flexSize ? flexSize : 7 }}>{children}</View>
         </KeyboardAvoidingView>
       </Container>
     </TouchableWithoutFeedback>

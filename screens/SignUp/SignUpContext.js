@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { format } from "date-fns";
 
 const SignUpAppContext = React.createContext();
 
@@ -9,6 +10,7 @@ const SignUpAppContextProvider = ({ children }) => {
   const [password, setPassword] = useState("");
   const [repassword, setRepassword] = useState("");
   const [gender, setGender] = useState("");
+  const [birthDay, setBirthDay] = useState(format(new Date(), "yyyy/MM/dd"));
 
   const contextValue = {
     username,
@@ -23,6 +25,8 @@ const SignUpAppContextProvider = ({ children }) => {
     setRepassword,
     gender,
     setGender,
+    birthDay,
+    setBirthDay,
   };
 
   return (

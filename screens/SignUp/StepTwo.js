@@ -12,13 +12,12 @@ const Container = styled.View`
   align-items: center;
   justify-content: center;
   flex-direction: row;
-  margin-top: 20px;
   margin-bottom: 10px;
 `;
 
 const BtnContainer = styled.View`
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   flex-direction: row;
   margin-bottom: 100px;
   width: 85%;
@@ -83,12 +82,12 @@ export default function StepTwo({ navigation }) {
     setErrorMsg("");
   };
 
-  const handleNext = () => {
+  const handleNext = (nextPage) => {
     if (gender == null || gender == "") {
       setErrorMsg("Please, select the gender");
       return false;
     }
-    navigation.navigate("StepThree");
+    navigation.navigate(nextPage);
   };
 
   const HeaderBar = () => (
@@ -124,7 +123,11 @@ export default function StepTwo({ navigation }) {
       </Container>
       {errorMsg !== "" && <ErrorText>{errorMsg}</ErrorText>}
       <BtnContainer>
-        <AuthButton text="Next" disabled={false} onPress={handleNext} />
+        <AuthButton
+          text="Next"
+          disabled={false}
+          onPress={() => handleNext("StepThree")}
+        />
       </BtnContainer>
     </AuthLayout>
   );

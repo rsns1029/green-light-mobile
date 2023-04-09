@@ -3,10 +3,11 @@ import styled from "styled-components/native";
 import { colors } from "../../colors";
 
 const Container = styled.View`
-  margin-top : 20px
+  margin-top: 20px;
   flex-direction: row;
   justify-content: center;
 `;
+
 const StepBtn = styled.TouchableOpacity`
   background-color: gray;
   padding: 10px;

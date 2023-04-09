@@ -96,8 +96,7 @@ export default function StepOne({ navigation }) {
     <StepBar
       navigation={navigation}
       currentStep={1}
-      style={{ marginBottom: 100, flex: 1 }}
-      onBeforeNavigate={() => navigation.navigate("StepTwo")} // temp onBeforeNavigate={handleNext}
+      onBeforeNavigate={() => navigation.navigate("StepThree")} // temp onBeforeNavigate={handleNext}
     />
   );
 

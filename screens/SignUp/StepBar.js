@@ -46,6 +46,14 @@ export default function StepBar({ navigation, currentStep, onBeforeNavigate }) {
       >
         <Text> 3 </Text>
       </StepBtn>
+      <StepBtn
+        onPress={async () => onBeforeNavigate("StepFour")}
+        style={{
+          backgroundColor: currentStep === 4 ? colors.green : "gray",
+        }}
+      >
+        <Text> 4 </Text>
+      </StepBtn>
     </Container>
   );
 }

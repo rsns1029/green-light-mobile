@@ -3,10 +3,13 @@ import { createStackNavigator } from "@react-navigation/stack";
 import StepOne from "./SignUp/StepOne";
 import StepTwo from "./SignUp/StepTwo";
 import StepThree from "./SignUp/StepThree";
+import StepFour from "./SignUp/StepFour";
 import { SignUpAppContextProvider } from "./SignUp/SignUpContext";
-import { Button, Text, TouchableOpacity } from "react-native";
+import { TouchableOpacity } from "react-native";
 import { Alert } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
+import styled from "styled-components/native";
+import { colors } from "../colors";
 
 const Stack = createStackNavigator();
 
@@ -26,6 +29,7 @@ export default function CreateAccount({ navigation }) {
                 style={{
                   justifyContent: "center",
                   marginTop: 20,
+                  marginLeft: 10,
                   height: 40,
                   width: 40,
                 }}
@@ -46,7 +50,11 @@ export default function CreateAccount({ navigation }) {
                   );
                 }}
               >
-                <Icon name="chevron-left" size={20} color="white" />
+                <Icon
+                  name="chevron-left"
+                  size={20}
+                  style={{ color: colors.green }}
+                />
               </TouchableOpacity>
             );
           },
@@ -55,6 +63,7 @@ export default function CreateAccount({ navigation }) {
         <Stack.Screen name="StepOne" component={StepOne} />
         <Stack.Screen name="StepTwo" component={StepTwo} />
         <Stack.Screen name="StepThree" component={StepThree} />
+        <Stack.Screen name="StepFour" component={StepFour} />
       </Stack.Navigator>
     </SignUpAppContextProvider>
   );

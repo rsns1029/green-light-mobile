@@ -45,6 +45,7 @@ const SubExplainText = styled.Text`
   font-size: 15px;
   margin-bottom: 10px;
   align-self: baseline;
+  width: 90%;
 `;
 
 const RemoveIconTouchable = styled.TouchableOpacity`

@@ -11,7 +11,7 @@ const SignUpAppContextProvider = ({ children }) => {
   const [repassword, setRepassword] = useState("");
   const [gender, setGender] = useState("");
   const [birthDay, setBirthDay] = useState(format(new Date(), "yyyy/MM/dd"));
-  const [avatar, setAvatar] = useState("");
+  const [avatar, setAvatar] = useState(null);
 
   const contextValue = {
     username,

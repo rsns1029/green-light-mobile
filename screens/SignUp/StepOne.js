@@ -23,8 +23,7 @@ export default function StepOne({ navigation }) {
   };
 
   const { username, setUsername } = useContext(SignUpAppContext);
-  const { reservedUsername, setReservedUsername } =
-    useContext(SignUpAppContext);
+  const { reservedUsername, setReservedUsername } = useContext(SignUpAppContext); // prettier-ignore
   const { password, setPassword } = useContext(SignUpAppContext);
   const { repassword, setRepassword } = useContext(SignUpAppContext);
   const [errorMsg, setErrorMsg] = useState("");

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { View, TouchableOpacity, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
@@ -6,6 +6,7 @@ import AuthButton from "../../components/auth/AuthButton";
 import styled from "styled-components/native";
 import { colors } from "../../colors";
 import StepBar from "./StepBar";
+import { SignUpAppContext } from "./SignUpContext";
 
 const BtnContainer = styled.View`
   width: 80%;
@@ -58,7 +59,7 @@ const RemoveIconTouchable = styled.TouchableOpacity`
 `;
 
 export default function StepFour({ navigation }) {
-  const [avatar, setAvatar] = useState(null);
+  const { avatar, setAvatar } = useContext(SignUpAppContext);
 
   const handleRemoveAvatar = () => {
     console.log("default");
@@ -145,10 +146,14 @@ export default function StepFour({ navigation }) {
       <BtnContainer>
         <AuthButton
           text={avatar ? "Create Account" : "Add Picture"}
-          onPress={avatar ? handleAvatarPress : handleAvatarPress}
+          onPress={
+            avatar ? () => handleNext("ConditionStep") : handleAvatarPress
+          }
         />
         <SkipTouchableOpacity
-          onPress={avatar ? handleAvatarPress : handleAvatarPress}
+          onPress={
+            avatar ? handleAvatarPress : () => handleNext("ConditionStep")
+          }
         >
           <SkipLink>{avatar ? "Edit Photo" : "Skip"}</SkipLink>
         </SkipTouchableOpacity>

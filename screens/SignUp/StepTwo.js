@@ -83,6 +83,7 @@ export default function StepTwo({ navigation }) {
   };
 
   const handleNext = (nextPage) => {
+    console.log(gender);
     if (gender == null || gender == "") {
       setErrorMsg("Please, select the gender");
       return false;
@@ -103,7 +104,7 @@ export default function StepTwo({ navigation }) {
     navigation.setOptions({
       headerTitle: HeaderBar,
     });
-  }, []);
+  }, [gender]);
 
   return (
     <AuthLayout>

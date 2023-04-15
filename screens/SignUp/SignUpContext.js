@@ -7,6 +7,7 @@ const SignUpAppContextProvider = ({ children }) => {
   const [username, setUsername] = useState("");
   const [reservedUsername, setReservedUsername] = useState("");
   const [email, setEmail] = useState("");
+  const [phoneNo, setPhoneNo] = useState("");
   const [password, setPassword] = useState("");
   const [repassword, setRepassword] = useState("");
   const [gender, setGender] = useState("");
@@ -30,6 +31,8 @@ const SignUpAppContextProvider = ({ children }) => {
     setBirthDay,
     avatar,
     setAvatar,
+    phoneNo,
+    setPhoneNo,
   };
 
   return (

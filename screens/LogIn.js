@@ -1,6 +1,10 @@
 import React, { useRef } from "react";
-import { View } from "react-native";
+import { Text, View } from "react-native";
 
 export default function Login() {
-  return <View></View>;
+  return (
+    <View>
+      <Text>login</Text>
+    </View>
+  );
 }

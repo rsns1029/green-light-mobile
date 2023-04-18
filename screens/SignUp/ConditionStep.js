@@ -6,6 +6,38 @@ import AuthButton from "../../components/auth/AuthButton";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useForm } from "react-hook-form";
 import { SignUpAppContext } from "./SignUpContext";
+import { gql, useMutation } from "@apollo/client";
+import { ReactNativeFile } from "apollo-upload-client";
+import { formatISO } from "date-fns";
+
+const CREATE_ACCOUNT_MUTATION = gql`
+  mutation createAccount(
+    $username: String!
+    $password: String!
+    $sex: String!
+    $interestingSex: String
+    $birthDay: String!
+    $phoneNo: String
+    $email: String
+    $instaUsername: String
+    $avatar: Upload
+  ) {
+    createAccount(
+      username: $username
+      password: $password
+      sex: $sex
+      interestingSex: $interestingSex
+      birthDay: $birthDay
+      phoneNo: $phoneNo
+      email: $email
+      instaUsername: $instaUsername
+      avatar: $avatar
+    ) {
+      ok
+      error
+    }
+  }
+`;
 
 const Container = styled.View`
   flex: 1;
@@ -70,6 +102,31 @@ export default function ConditionStep({ navigation }) {
 
   const [errorMsg, setErrorMsg] = useState("");
 
+  const onCompleted = (data) => {
+    const {
+      createAccount: { ok, error },
+    } = data;
+
+    const { username, password } = getValues();
+    console.log(username, password);
+    console.log("navigating");
+    if (ok) {
+      navigation.navigate("LogIn", {
+        username,
+        password,
+      });
+    } else {
+      console.log("error :  ", error);
+    }
+  };
+
+  const [createAccountMutation, { loading }] = useMutation(
+    CREATE_ACCOUNT_MUTATION,
+    {
+      onCompleted,
+    }
+  );
+
   const {
     register,
     handleSubmit,
@@ -77,6 +134,7 @@ export default function ConditionStep({ navigation }) {
     getValues,
     formState: { errors },
   } = useForm();
+
   const onValid = (data) => {
     if (!agree) {
       setErrorMsg("Please, Agree the term");
@@ -84,36 +142,82 @@ export default function ConditionStep({ navigation }) {
     }
     console.log("Data : ", data);
 
-    const requiredFields = ["username", "password", "gender", "birthDay"];
-    const missingFields = requiredFields.filter((field) => !data[field]);
+    // const requiredFields = ["username", "password", "gender", "birthDay"];
+    // const missingFields = requiredFields.filter((field) => !data[field]);
 
-    if (missingFields.length > 0) {
-      setErrorMsg(
-        `Please, fill in the required fields: ${missingFields.join(", ")}`
-      );
-      return false;
-    }
+    // if (missingFields.length > 0) {
+    //   setErrorMsg(
+    //     `Please, fill in the required fields: ${missingFields.join(", ")}`
+    //   );
+    //   return false;
+    // }
+    const dataEntries = Object.entries(data);
+    const filteredEntries = dataEntries.filter(
+      ([key, value]) => value !== null && value !== ""
+    );
+    const filteredData = filteredEntries.reduce((acc, [key, value]) => {
+      return {
+        ...acc,
+        [key]: value,
+      };
+    }, {});
+    console.log("filteredData : ", filteredData);
 
     if (!loading) {
       createAccountMutation({
         variables: {
-          ...data,
+          ...filteredData,
         },
       });
     }
   };
 
-  const { username, password, email, gender, birthDay, avatar, phoneNo } =
-    useContext(SignUpAppContext);
+  const {
+    username,
+    password,
+    email,
+    sex,
+    interestingSex,
+    birthDay,
+    avatarUri,
+    phoneNo,
+    instaUsername,
+  } = useContext(SignUpAppContext);
 
   useEffect(() => {
+    console.log("useEffect in condition~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    console.log(
+      username,
+      password,
+      email,
+      sex,
+      interestingSex,
+      birthDay,
+      avatarUri,
+      phoneNo,
+      instaUsername
+    );
+
     setValue("username", username);
     setValue("password", password);
     setValue("email", email);
     setValue("phoneNo", phoneNo);
-    setValue("gender", gender);
-    setValue("birthDay", birthDay);
-    setValue("avatar", avatar);
+    setValue("sex", sex);
+
+    const [year, month, day] = birthDay.split("/");
+    const birthDayDate = new Date(year, month - 1, day).toISOString();
+    setValue("birthDay", birthDayDate);
+
+    if (avatarUri) {
+      const file = new ReactNativeFile({
+        uri: avatarUri,
+        name: `${username}-avatar.jpg`,
+        type: "image/jpeg",
+      });
+      setValue("avatar", file);
+    }
+    setValue("instaUsername", instaUsername);
+    setValue("interestingSex", interestingSex);
   }, []);
 
   useEffect(() => {
@@ -133,8 +237,16 @@ export default function ConditionStep({ navigation }) {
       required: false,
     });
 
-    register("gender", {
+    register("sex", {
       required: true,
+    });
+
+    register("interestingSex", {
+      required: false,
+    });
+
+    register("instaUsername", {
+      required: false,
     });
 
     register("birthDay", {
@@ -145,8 +257,6 @@ export default function ConditionStep({ navigation }) {
       required: false,
     });
   }, [register]);
-
-  console.log(errors);
 
   return (
     <AuthLayout>

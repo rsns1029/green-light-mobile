@@ -5,14 +5,16 @@ const SignUpAppContext = React.createContext();
 
 const SignUpAppContextProvider = ({ children }) => {
   const [username, setUsername] = useState("");
+  const [instaUsername, setInstaUsername] = useState("");
   const [reservedUsername, setReservedUsername] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNo, setPhoneNo] = useState("");
   const [password, setPassword] = useState("");
   const [repassword, setRepassword] = useState("");
-  const [gender, setGender] = useState("");
+  const [sex, setSex] = useState("");
   const [birthDay, setBirthDay] = useState(format(new Date(), "yyyy/MM/dd"));
-  const [avatar, setAvatar] = useState(null);
+  const [avatarUri, setAvataraUri] = useState(null);
+  const [interestingSex, setInterestingSex] = useState("");
 
   const contextValue = {
     username,
@@ -25,14 +27,18 @@ const SignUpAppContextProvider = ({ children }) => {
     setPassword,
     repassword,
     setRepassword,
-    gender,
-    setGender,
+    sex,
+    setSex,
     birthDay,
     setBirthDay,
-    avatar,
-    setAvatar,
+    avatarUri,
+    setAvataraUri,
     phoneNo,
     setPhoneNo,
+    instaUsername,
+    setInstaUsername,
+    interestingSex,
+    setInterestingSex,
   };
 
   return (

@@ -59,11 +59,11 @@ const RemoveIconTouchable = styled.TouchableOpacity`
 `;
 
 export default function StepFour({ navigation }) {
-  const { avatar, setAvatar } = useContext(SignUpAppContext);
+  const { avatarUri, setAvataraUri } = useContext(SignUpAppContext);
 
   const handleRemoveAvatar = () => {
     console.log("default");
-    setAvatar(null);
+    setAvataraUri(null);
   };
 
   const handleNext = (nextPage) => {
@@ -94,7 +94,7 @@ export default function StepFour({ navigation }) {
     });
 
     if (!result.canceled) {
-      setAvatar(result.assets[0].uri);
+      setAvataraUri(result.assets[0].uri);
     }
   };
 
@@ -126,9 +126,9 @@ export default function StepFour({ navigation }) {
               zindex: 0,
             }}
           >
-            {avatar ? (
+            {avatarUri ? (
               <Image
-                source={{ uri: avatar }}
+                source={{ uri: avatarUri }}
                 style={{ height: 200, width: 200, backgroundColor: "blue" }}
               />
             ) : (
@@ -136,7 +136,7 @@ export default function StepFour({ navigation }) {
             )}
           </View>
         </TouchableOpacity>
-        {avatar && (
+        {avatarUri && (
           <RemoveIconTouchable onPress={handleRemoveAvatar}>
             <Ionicons name="close-circle" size={40} color="white" />
           </RemoveIconTouchable>
@@ -145,17 +145,17 @@ export default function StepFour({ navigation }) {
 
       <BtnContainer>
         <AuthButton
-          text={avatar ? "Create Account" : "Add Picture"}
+          text={avatarUri ? "Create Account" : "Add Picture"}
           onPress={
-            avatar ? () => handleNext("ConditionStep") : handleAvatarPress
+            avatarUri ? () => handleNext("ConditionStep") : handleAvatarPress
           }
         />
         <SkipTouchableOpacity
           onPress={
-            avatar ? handleAvatarPress : () => handleNext("ConditionStep")
+            avatarUri ? handleAvatarPress : () => handleNext("ConditionStep")
           }
         >
-          <SkipLink>{avatar ? "Edit Photo" : "Skip"}</SkipLink>
+          <SkipLink>{avatarUri ? "Edit Photo" : "Skip"}</SkipLink>
         </SkipTouchableOpacity>
       </BtnContainer>
     </View>

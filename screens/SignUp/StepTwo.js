@@ -72,19 +72,19 @@ const GenderButton = ({ icon, label, onPress, isSelected }) => {
 };
 
 export default function StepTwo({ navigation }) {
-  const { gender, setGender } = useContext(SignUpAppContext);
-  const [selectedGender, setSelectedGender] = useState(gender);
+  const { sex, setSex } = useContext(SignUpAppContext);
+  const [selectedGender, setSelectedGender] = useState(sex);
   const [errorMsg, setErrorMsg] = useState("");
 
   const handleGenderSelection = (g) => {
     setSelectedGender(g);
-    setGender(g);
+    setSex(g);
     setErrorMsg("");
   };
 
   const handleNext = (nextPage) => {
-    console.log(gender);
-    if (gender == null || gender == "") {
+    console.log(sex);
+    if (sex == null || sex == "") {
       setErrorMsg("Please, select the gender");
       return false;
     }
@@ -104,7 +104,7 @@ export default function StepTwo({ navigation }) {
     navigation.setOptions({
       headerTitle: HeaderBar,
     });
-  }, [gender]);
+  }, [sex]);
 
   return (
     <AuthLayout>

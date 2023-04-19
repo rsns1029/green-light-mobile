@@ -8,7 +8,6 @@ import { useForm } from "react-hook-form";
 import { SignUpAppContext } from "./SignUpContext";
 import { gql, useMutation } from "@apollo/client";
 import { ReactNativeFile } from "apollo-upload-client";
-import { formatISO } from "date-fns";
 
 const CREATE_ACCOUNT_MUTATION = gql`
   mutation createAccount(

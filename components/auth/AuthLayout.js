@@ -21,11 +21,11 @@ const Logo = styled.Image`
   max-width: 50%;
   width: 100%;
   height: 100px;
-  margin: 10px;
+  margin-bottom: 10px;
   align-self: center;
 `;
 
-export default function AuthLayout({ children, flexSize }) {
+export default function AuthLayout({ children, logoMarginTop }) {
   const isDark = useColorScheme() === "dark";
   const logoSource = isDark
     ? require("../../assets/glLogo-dark.png")
@@ -46,13 +46,18 @@ export default function AuthLayout({ children, flexSize }) {
             width: "100%",
             padding: 0,
             flex: 1,
+            justifyContent: "center",
           }}
           // keyboardVerticalOffset={Platform.OS === "ios" ? 50 : 0}
           behavior="padding"
           keyboardVerticalOffset={50}
         >
-          <Logo resizeMode="contain" source={logoSource} />
-          <View style={{ flex: flexSize ? flexSize : 7 }}>{children}</View>
+          <Logo
+            resizeMode="contain"
+            source={logoSource}
+            style={{ marginTop: logoMarginTop ? logoMarginTop : 25 }}
+          />
+          <View style={{ flex: 3 }}>{children}</View>
         </KeyboardAvoidingView>
       </Container>
     </TouchableWithoutFeedback>

@@ -22,6 +22,7 @@ const TOKEN = "token";
 
 export const logUserIn = async (token) => {
   await AsyncStorage.setItem(TOKEN, token);
+  isLoggedInVar(true);
   tokenVar(token);
 };
 
@@ -33,7 +34,7 @@ export const logUserOut = async (token) => {
 
 const uploadHttpLink = createUploadLink({
   // uri : "https://instaclone-backend-hm.herokuapp.com/graphql",
-  uri: "https://71df-221-143-244-19.ngrok-free.app/graphql",
+  uri: "https://0a01-221-143-244-19.ngrok-free.app/graphql",
 });
 
 const wsLink = new WebSocketLink({

@@ -15,6 +15,7 @@ import { AsyncStorageWrapper, persistCache } from "apollo3-cache-persist";
 import { ThemeProvider, ThemeContext } from "styled-components/native";
 import { darkTheme, lightTheme } from "./styled";
 import LoggedOutNav from "./navigators/LoggedOutNav";
+import LoggedInNav from "./navigators/LoggedInNav";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -88,7 +89,7 @@ export default function App() {
         <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
           <StatusBar hidden={false} />
           <NavigationContainer theme={MyTheme}>
-            <LoggedOutNav />
+            {isLoggedIn ? <LoggedInNav MyTheme={MyTheme} /> : <LoggedOutNav />}
           </NavigationContainer>
         </View>
       </ThemeProvider>

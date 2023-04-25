@@ -19,7 +19,7 @@ export default function Welcome({ navigation }) {
   return (
     <View style={{ flex: 1 }}>
       <View style={{ flex: 1 }}></View>
-      <AuthLayout flexSize={1}>
+      <AuthLayout>
         <AuthButton
           text="Create New Account"
           disabled={false}

@@ -10,3 +10,12 @@ export const ROOM_FRAGMENT = gql`
     }
   }
 `;
+
+export const MATCH_FRAGMENT = gql`
+  fragment MatchParts on User {
+    id
+    username
+    avatar
+    userStatus
+  }
+`;

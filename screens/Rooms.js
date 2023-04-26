@@ -3,8 +3,9 @@ import React from "react";
 import { FlatList, View, Text } from "react-native";
 import RoomItem from "../components/rooms/RoomItem";
 import ScreenLayout from "../components/ScreenLayout";
-
-import { ROOM_FRAGMENT } from "../fragments";
+import { MATCH_FRAGMENT, ROOM_FRAGMENT } from "../fragments";
+import styled from "styled-components/native";
+import HList from "../components/users/HList";
 
 const SEE_ROOMS_QUERY = gql`
   query seeRooms {
@@ -15,19 +16,48 @@ const SEE_ROOMS_QUERY = gql`
   ${ROOM_FRAGMENT}
 `;
 
-export default function Rooms() {
-  console.log("see room 1");
+const SEE_MATCHES_QUERY = gql`
+  query seeMatches {
+    seeMatches {
+      ...MatchParts
+    }
+  }
+  ${MATCH_FRAGMENT}
+`;
 
-  const { data, loading } = useQuery(SEE_ROOMS_QUERY, {
+const ListTitle = styled.Text`
+  color: ${(props) => props.theme.fontColor};
+  font-size: 18px;
+  font-weight: 600;
+  margin-left: 30px;
+`;
+
+export default function Rooms() {
+  console.log("see room 1 : ");
+
+  const { daata: chatData, loading } = useQuery(SEE_ROOMS_QUERY, {
     fetchPolicy: "network-only",
   });
 
-  console.log("see room 2");
+  const { data: matchData, loading: matchLoading } = useQuery(
+    SEE_MATCHES_QUERY,
+    { fetchPolicy: "network-only" }
+  );
+
+  console.log("matchData : ", matchData?.seeMatches);
 
   const renderItem = ({ item: room }) => <RoomItem {...room} />;
   return (
     <ScreenLayout loading={loading}>
       <FlatList
+        ListHeaderComponent={
+          <>
+            {matchLoading ? null : matchData?.seeMatches ? (
+              <HList title={"Matches"} data={matchData.seeMatches} />
+            ) : null}
+            <ListTitle>Chats</ListTitle>
+          </>
+        }
         ItemSeparatorComponent={
           <View
             style={{
@@ -38,7 +68,7 @@ export default function Rooms() {
           ></View>
         }
         style={{ width: "100%" }}
-        data={data?.seeRooms}
+        data={chatData?.seeRooms}
         keyExtractor={(room) => "" + room.id}
         renderItem={renderItem}
       />

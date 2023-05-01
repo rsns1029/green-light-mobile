@@ -2,6 +2,7 @@ import { colors } from "../../colors";
 import styled from "styled-components/native";
 import useMe from "../../hooks/useMe";
 import { useNavigation } from "@react-navigation/core";
+import Avatarimg from "../users/AvatarImg";
 
 const RoomContainer = styled.TouchableOpacity`
   width: 100%;
@@ -15,12 +16,7 @@ const Column = styled.View`
   align-items: center;
   justify-content: space-between;
 `;
-const Avatar = styled.Image`
-  width: 50px;
-  height: 50px;
-  border-radius: 25px;
-  margin-right: 20px;
-`;
+
 const Data = styled.View``;
 const UnreadDot = styled.View`
   width: 10px;
@@ -45,15 +41,20 @@ export default function RoomItem({ users, unreadTotal, id }) {
   const talkingTo = users.find(
     (user) => user.username !== meData?.me?.username
   );
+
+  console.log("id : ", id);
+  console.log("talkingTo : ", talkingTo);
+
   const goToRoom = () =>
-    navigation.navigate("Room", {
-      id,
-      talkingTo,
+    navigation.navigate("Messages", {
+      screen: "Room",
+      params: { id, talkingTo },
     });
+
   return (
     <RoomContainer onPress={goToRoom}>
       <Column>
-        <Avatar source={{ uri: talkingTo.avatar }} />
+        <Avatarimg source={{ uri: talkingTo.avatar }} />
         <Data>
           <Username>{talkingTo.username}</Username>
           <UnreadText>

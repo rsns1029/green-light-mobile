@@ -21,6 +21,11 @@ const ListTitle = styled.Text`
 
 export default function HList({ title, data, hLoadMore }) {
   const renderItem = ({ item: user }) => <VUser {...user} />;
+
+  if (data.length === 0) {
+    return null;
+  }
+
   return (
     <ListContainer>
       <ListTitle>{title}</ListTitle>

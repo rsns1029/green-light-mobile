@@ -6,6 +6,7 @@ import ScreenLayout from "../components/ScreenLayout";
 import { MATCH_FRAGMENT, ROOM_FRAGMENT } from "../fragments";
 import styled from "styled-components/native";
 import HList from "../components/users/HList";
+import { color } from "react-native-reanimated";
 
 const SEE_ROOMS_QUERY = gql`
   query seeRooms {
@@ -32,10 +33,36 @@ const ListTitle = styled.Text`
   margin-left: 30px;
 `;
 
+const SeparatorView = styled.View`
+  width: 100%;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.2);
+`;
+
+const EmptyListContainer = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`;
+
+const EmptyListText = styled.Text`
+  font-size: 16px;
+  font-weight: 500;
+  color: ${(props) => props.theme.fontColor};
+  margin-bottom: 15px;
+`;
+
+const PostImage = styled.Image`
+  width: 100%;
+  height: 200px;
+`;
+
 export default function Rooms() {
+  const noDataImgSrc = require("../assets/noData.png");
+
   console.log("see room 1 : ");
 
-  const { daata: chatData, loading } = useQuery(SEE_ROOMS_QUERY, {
+  const { data: chatData, loading: chatLoading } = useQuery(SEE_ROOMS_QUERY, {
     fetchPolicy: "network-only",
   });
 
@@ -44,11 +71,28 @@ export default function Rooms() {
     { fetchPolicy: "network-only" }
   );
 
-  console.log("matchData : ", matchData?.seeMatches);
-
   const renderItem = ({ item: room }) => <RoomItem {...room} />;
+
+  const ChatListEmptyComponent = () => {
+    if (chatData?.seeRooms?.length === 0) {
+      return (
+        <EmptyListContainer>
+          <PostImage source={noDataImgSrc} resizeMode="contain" />
+          <EmptyListText>Sorry, no chats found.</EmptyListText>
+        </EmptyListContainer>
+      );
+    }
+    return null;
+  };
+
+  const ListFooterComponent = () => {
+    if (chatData?.seeRooms?.length !== 0) {
+      return <SeparatorView />;
+    }
+  };
+
   return (
-    <ScreenLayout loading={loading}>
+    <ScreenLayout loading={matchLoading || chatLoading}>
       <FlatList
         ListHeaderComponent={
           <>
@@ -58,19 +102,13 @@ export default function Rooms() {
             <ListTitle>Chats</ListTitle>
           </>
         }
-        ItemSeparatorComponent={
-          <View
-            style={{
-              width: "100%",
-              height: 1,
-              backgroundColor: "rgba(255, 255, 255, 0.2)",
-            }}
-          ></View>
-        }
+        ItemSeparatorComponent={<SeparatorView />}
         style={{ width: "100%" }}
         data={chatData?.seeRooms}
         keyExtractor={(room) => "" + room.id}
         renderItem={renderItem}
+        ListFooterComponent={ListFooterComponent}
+        ListEmptyComponent={ChatListEmptyComponent}
       />
     </ScreenLayout>
   );

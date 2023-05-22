@@ -45,10 +45,16 @@ export default function RoomItem({ users, unreadTotal, id }) {
   console.log("id : ", id);
   console.log("talkingTo : ", talkingTo);
 
+  // const goToRoom = () =>
+  //   navigation.navigate("Messages", {
+  //     screen: "Room",
+  //     params: { id, talkingTo },
+  //   });
+
   const goToRoom = () =>
-    navigation.navigate("Messages", {
-      screen: "Room",
-      params: { id, talkingTo },
+    navigation.navigate("Room", {
+      id,
+      talkingTo,
     });
 
   return (

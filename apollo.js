@@ -14,6 +14,9 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createUploadLink } from "apollo-upload-client";
 import { WebSocketLink } from "@apollo/client/link/ws";
+import { SubscriptionClient } from "subscriptions-transport-ws";
+import { createClient } from "graphql-ws";
+import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
 
 export const isLoggedInVar = makeVar(false);
 export const tokenVar = makeVar("");
@@ -34,17 +37,61 @@ export const logUserOut = async (token) => {
 
 const uploadHttpLink = createUploadLink({
   // uri : "https://instaclone-backend-hm.herokuapp.com/graphql",
-  uri: "https://9a22-221-143-244-19.ngrok-free.app/graphql",
+  //        https://greenlight-backend-hm.herokuapp.com/graphql
+  uri: "https://ed89-221-143-244-19.ngrok-free.app/graphql",
 });
 
-const wsLink = new WebSocketLink({
-  uri: "ws://127.0.0.1/graphql",
-  options: {
-    connectionParams: () => ({
-      token: tokenVar(),
-    }),
-  },
-});
+// const wsLink = new WebSocketLink({
+//   uri: "ws://7cfe-221-143-244-19.ngrok-free.app/graphql",
+//   options: {
+//     lazy: true,
+//     reconnect: true,
+//     timeout: 30000,
+//     connectionParams: () => ({
+//       token: tokenVar(),
+//     }),
+//   },
+// });
+
+// const wsLink = new WebSocketLink(
+//   new SubscriptionClient("ws://7cfe-221-143-244-19.ngrok-free.app/graphql", {
+//     reconnect: true,
+//     connectionParams: () => ({
+//       token: tokenVar(),
+//     }),
+//   })
+// );
+
+const wsLink = new GraphQLWsLink(
+  createClient({
+    url: "ws://ed89-221-143-244-19.ngrok-free.app/graphql",
+    connectionParams: () => {
+      return {
+        token: tokenVar(),
+      };
+    },
+  })
+);
+
+// wsLink.subscriptionClient.on("connecting", () => {
+//   console.log("WebSocketLink is connecting...");
+// });
+
+// wsLink.subscriptionClient.on("connected", () => {
+//   console.log("WebSocketLink is connected.");
+// });
+
+// wsLink.subscriptionClient.on("reconnecting", () => {
+//   console.log("WebSocketLink is reconnecting...");
+// });
+
+// wsLink.subscriptionClient.on("disconnected", () => {
+//   console.log("WebSocketLink is disconnected... ");
+// });
+
+// wsLink.subscriptionClient.on("error", (error) => {
+//   console.log(`WebSocketLink error: ${error.message}`);
+// });
 
 const authLink = setContext((_, { headers }) => {
   return {
@@ -71,6 +118,18 @@ export const cache = new InMemoryCache({
         // seeFeed: offsetLimitPagination(),  //handles pagination by apollo
       },
     },
+    User: {
+      keyFields: ["id"], // Ensure User objects have an ID
+    },
+    // Message: {
+    //   fields: {
+    //     user: {
+    //       merge(existing, incoming) {
+    //         return { ...existing, ...incoming };
+    //       },
+    //     },
+    //   },
+    // },
   },
 });
 

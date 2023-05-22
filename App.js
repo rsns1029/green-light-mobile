@@ -72,13 +72,6 @@ export default function App() {
 
   const isDark = useColorScheme() === "dark";
 
-  const MyTheme = {
-    colors: {
-      background: isDark ? darkTheme.bgColor : lightTheme.bgColor,
-      text: isDark ? darkTheme.fontColor : lightTheme.fontColor,
-    },
-  };
-
   if (!ready) {
     return null;
   }
@@ -88,8 +81,8 @@ export default function App() {
       <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
         <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
           <StatusBar hidden={false} />
-          <NavigationContainer theme={MyTheme}>
-            {isLoggedIn ? <LoggedInNav MyTheme={MyTheme} /> : <LoggedOutNav />}
+          <NavigationContainer>
+            {isLoggedIn ? <LoggedInNav /> : <LoggedOutNav />}
           </NavigationContainer>
         </View>
       </ThemeProvider>

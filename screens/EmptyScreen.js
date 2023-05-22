@@ -1,7 +1,7 @@
-import React from "react";
-import { Text, View } from "react-native";
-
-export default function EmptyScreen() {
+import React, { useEffect } from "react";
+import { Text, TouchableOpacity, View } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+export default function EmptyScreen({ navigation }) {
   return (
     <View
       style={{

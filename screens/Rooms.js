@@ -33,6 +33,10 @@ const ListTitle = styled.Text`
   margin-left: 30px;
 `;
 
+const MarginTopContainer = styled.View`
+  margin-top: 20px;
+`;
+
 const SeparatorView = styled.View`
   width: 100%;
   height: 1px;
@@ -97,7 +101,9 @@ export default function Rooms() {
         ListHeaderComponent={
           <>
             {matchLoading ? null : matchData?.seeMatches ? (
-              <HList title={"Matches"} data={matchData.seeMatches} />
+              <MarginTopContainer>
+                <HList title={"Matches"} data={matchData.seeMatches} />
+              </MarginTopContainer>
             ) : null}
             <ListTitle>Chats</ListTitle>
           </>

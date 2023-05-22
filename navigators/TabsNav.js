@@ -1,23 +1,24 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Image, View } from "react-native";
 import EmptyScreen from "../screens/EmptyScreen";
-import Rooms from "../screens/Rooms";
 import TabIcon from "../components/nav/TabIcon";
+import { useTheme } from "styled-components";
 
 const Tabs = createBottomTabNavigator();
 
-export default function TabsNav({ theme }) {
+export default function TabsNav() {
+  const theme = useTheme();
+  console.log(theme);
   return (
     <Tabs.Navigator
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: false,
         tabBarStyle: {
-          backgroundColor: theme.colors.background,
-          borderTopColor: theme.colors.text,
+          backgroundColor: theme.bgColor,
+          borderTopColor: theme.fontColor,
         },
-        tabBarActiveTintColor: theme.colors.text,
+        tabBarActiveTintColor: theme.fontColor,
         tabBarInactiveTintColor: "grey",
       }}
     >
@@ -32,6 +33,16 @@ export default function TabsNav({ theme }) {
       />
       <Tabs.Screen
         name="Chats"
+        component={EmptyScreen}
+        listeners={({ navigation }) => ({
+          tabPress: (event) => {
+            // Prevent the default action (which would be opening the EmptyScreen)
+            event.preventDefault();
+
+            // Navigate to the desired screen instead
+            navigation.navigate("Messages");
+          },
+        })}
         options={{
           tabBarIcon: ({ focused, color, size }) => (
             <TabIcon
@@ -41,8 +52,7 @@ export default function TabsNav({ theme }) {
             />
           ),
         }}
-        component={Rooms}
-      ></Tabs.Screen>
+      />
       <Tabs.Screen
         name="Profile"
         component={EmptyScreen}

@@ -7,6 +7,7 @@ import { MATCH_FRAGMENT, ROOM_FRAGMENT } from "../fragments";
 import styled from "styled-components/native";
 import HList from "../components/users/HList";
 import { color } from "react-native-reanimated";
+import { colors } from "../colors";
 
 const SEE_ROOMS_QUERY = gql`
   query seeRooms {
@@ -29,6 +30,7 @@ const SEE_MATCHES_QUERY = gql`
 const ListTitle = styled.Text`
   color: ${(props) => props.theme.fontColor};
   font-size: 18px;
+  margin-top: 20px;
   font-weight: 600;
   margin-left: 30px;
 `;
@@ -38,8 +40,16 @@ const MarginTopContainer = styled.View`
 `;
 
 const SeparatorView = styled.View`
-  width: 100%;
+  width: 90%;
   height: 1px;
+  align-self: center;
+  background-color: rgba(255, 255, 255, 0.2);
+`;
+
+const BigSeparatorView = styled.View`
+  width: 95%;
+  height: 3px;
+  align-self: center;
   background-color: rgba(255, 255, 255, 0.2);
 `;
 
@@ -103,6 +113,7 @@ export default function Rooms() {
             {matchLoading ? null : matchData?.seeMatches ? (
               <MarginTopContainer>
                 <HList title={"Matches"} data={matchData.seeMatches} />
+                <BigSeparatorView />
               </MarginTopContainer>
             ) : null}
             <ListTitle>Chats</ListTitle>

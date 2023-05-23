@@ -4,7 +4,7 @@ import styled from "styled-components/native";
 import VUser from "./VUser";
 
 const ListContainer = styled.View`
-  margin-bottom: 40px;
+  margin-bottom: 5px;
 `;
 
 export const HListSeparator = styled.View`
@@ -16,7 +16,7 @@ const ListTitle = styled.Text`
   font-size: 18px;
   font-weight: 600;
   margin-left: 30px;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
 `;
 
 export default function HList({ title, data, hLoadMore }) {

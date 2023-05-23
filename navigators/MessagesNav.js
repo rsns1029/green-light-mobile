@@ -10,11 +10,16 @@ import { useTheme } from "styled-components";
 const NativeStack = createStackNavigator();
 
 export default function MessagesNav({ navigation }) {
+  const theme = useTheme();
+
   return (
     <NativeStack.Navigator
       screenOptions={{
         tabBarShowLabel: false,
         tabBarInactiveTintColor: "grey",
+        backgroundColor: theme.bgColor,
+        cardStyle: { backgroundColor: theme.bgColor },
+        animationEnabled: false,
       }}
     >
       <NativeStack.Screen
@@ -23,12 +28,12 @@ export default function MessagesNav({ navigation }) {
         options={{
           headerShown: true,
           title: "Messages",
-          headerTitleAlign: "center",
+          headerTintColor: "grey",
           headerLeft: () => (
             <Ionicons
               name="close"
               size={24}
-              color="black"
+              color="grey"
               onPress={() => navigation.navigate("Tabs")}
               style={{ marginLeft: 10 }}
             />
@@ -37,7 +42,11 @@ export default function MessagesNav({ navigation }) {
         }}
       />
       <NativeStack.Screen
-        options={{ headerShown: true }}
+        options={{
+          headerShown: true,
+          headerTintColor: "grey",
+          headerStyle: { backgroundColor: colors.green },
+        }}
         name="Room"
         component={Room}
       />

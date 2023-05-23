@@ -20,6 +20,7 @@ export default function TabsNav() {
         },
         tabBarActiveTintColor: theme.fontColor,
         tabBarInactiveTintColor: "grey",
+        backgroundColor: theme.bgColor,
       }}
     >
       <Tabs.Screen

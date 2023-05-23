@@ -13,6 +13,7 @@ import { useForm } from "react-hook-form";
 import { Ionicons } from "@expo/vector-icons";
 import useMe from "../hooks/useMe";
 import { useCallback } from "react";
+import { colors } from "../colors";
 
 const NEW_MESSAGE_FRAGMENT = gql`
   fragment NewMessage on Message {
@@ -110,7 +111,7 @@ const Message = styled.Text`
   margin: 0px 10px;
 `;
 const TextInput = styled.TextInput`
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  border: 1px solid ${colors.green};
   padding: 10px 20px;
   color: white;
   border-radius: 1000px;
@@ -207,7 +208,6 @@ export default function Room({ route, navigation }) {
   };
 
   const onViewableItemsChanged = useCallback(({ viewableItems }) => {
-    console.log("viewableItems : ", viewableItems);
     viewableItems.forEach(
       ({
         item: {
@@ -260,7 +260,6 @@ export default function Room({ route, navigation }) {
   const [subscribed, setSubscribed] = useState(false);
   useEffect(() => {
     if (data?.seeRoom && !subscribed) {
-      console.log("seeRoom : ", data.seeRoom.messages);
       subscribeToMore({
         document: ROOM_UPDATES,
         variables: {
@@ -333,7 +332,7 @@ export default function Room({ route, navigation }) {
         />
         <InputContainer>
           <TextInput
-            placeholderTextColor="rgba(255, 255, 255, 0.5)"
+            placeholderTextColor={colors.inactiveGreen}
             placeholder="Write a message..."
             returnKeyLabel="Send Message"
             returnKeyType="send"
@@ -348,9 +347,7 @@ export default function Room({ route, navigation }) {
             <Ionicons
               name="send"
               color={
-                !Boolean(watch("message"))
-                  ? "rgba(255, 255, 255, 0.5)"
-                  : "white"
+                !Boolean(watch("message")) ? colors.inactiveGreen : colors.green
               }
               size={22}
             />

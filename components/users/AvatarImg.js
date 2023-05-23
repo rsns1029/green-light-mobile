@@ -6,7 +6,7 @@ const AvatarImage = styled.Image`
   width: 50px;
   height: 50px;
   border-radius: 25px;
-  margin: 10px;
+  margin: 10px 10px 1px 10px;
 `;
 
 const IconContainer = styled.View`
@@ -14,7 +14,7 @@ const IconContainer = styled.View`
   height: 50px;
   border-radius: 25px;
   background-color: grey;
-  margin: 10px;
+  margin: 10px 10px 1px 10px;
   justify-content: center;
   align-items: center;
 `;

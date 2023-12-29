@@ -17,7 +17,7 @@ export default function Welcome({ navigation }) {
   const goToLogIn = () => navigation.navigate("LogIn");
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1 , backgroundColor : 'black'}}>
       <View style={{ flex: 1 }}></View>
       <AuthLayout>
         <AuthButton

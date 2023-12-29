@@ -1,6 +1,6 @@
 export const lightTheme = {
-  bgColor: "white",
-  fontColor: "rgb(38, 38, 38)",
+  bgColor: "#000",
+  fontColor:  "white",
 };
 
 export const darkTheme = {

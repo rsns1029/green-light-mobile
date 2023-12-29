@@ -3,7 +3,6 @@ import { Ionicons } from "@expo/vector-icons";
 import * as Font from "expo-font";
 import { Asset } from "expo-asset";
 import { StatusBar, View, useColorScheme } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
 // import LoggedOutNav from "./navigators/LoggedOutNav";
 import * as SplashScreen from "expo-splash-screen";
 import { ApolloProvider, useReactiveVar } from "@apollo/client";
@@ -16,6 +15,8 @@ import { ThemeProvider, ThemeContext } from "styled-components/native";
 import { darkTheme, lightTheme } from "./styled";
 import LoggedOutNav from "./navigators/LoggedOutNav";
 import LoggedInNav from "./navigators/LoggedInNav";
+import { NavigationContainer, DarkTheme } from '@react-navigation/native';
+
 
 SplashScreen.preventAutoHideAsync();
 
@@ -81,7 +82,7 @@ export default function App() {
       <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
         <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
           <StatusBar hidden={false} />
-          <NavigationContainer>
+          <NavigationContainer theme={DarkTheme}>
             {isLoggedIn ? <LoggedInNav /> : <LoggedOutNav />}
           </NavigationContainer>
         </View>

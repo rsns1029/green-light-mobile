@@ -24,6 +24,10 @@ export default function CreateAccount({ navigation }) {
           headerTintColor: "white",
           headerTitle: "Create Account",
           headerTitleAlign: "center",
+          headerStyle: {
+            backgroundColor: "#080402",
+          },
+          contentStyle: {backgroundColor: 'black'},
           headerLeft: () => {
             return (
               <TouchableOpacity

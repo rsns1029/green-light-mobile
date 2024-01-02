@@ -38,7 +38,7 @@ export const logUserOut = async (token) => {
 const uploadHttpLink = createUploadLink({
   // uri : "https://instaclone-backend-hm.herokuapp.com/graphql",
   //        https://greenlight-backend-hm.herokuapp.com/graphql
-  uri: "https://ed89-221-143-244-19.ngrok-free.app/graphql",
+  uri: "https://green-light-backend-04c79b6adf93.herokuapp.com/graphql",
 });
 
 // const wsLink = new WebSocketLink({
@@ -58,13 +58,13 @@ const uploadHttpLink = createUploadLink({
 //     reconnect: true,
 //     connectionParams: () => ({
 //       token: tokenVar(),
-//     }),
+//     }), //ts26582377nd
 //   })
 // );
 
 const wsLink = new GraphQLWsLink(
   createClient({
-    url: "ws://ed89-221-143-244-19.ngrok-free.app/graphql",
+    url: "ws://green-light-backend-04c79b6adf93.herokuapp.com/graphql",
     connectionParams: () => {
       return {
         token: tokenVar(),

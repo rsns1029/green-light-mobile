@@ -10,7 +10,6 @@ import client, { isLoggedInVar, tokenVar, cache } from "./apollo";
 // import { isLoggedInVar } from "./apollo";
 // import LoggedInNav from "./navigators/LoggedInNav";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { AsyncStorageWrapper, persistCache } from "apollo3-cache-persist";
 import { ThemeProvider, ThemeContext } from "styled-components/native";
 import { darkTheme, lightTheme } from "./styled";
 import LoggedOutNav from "./navigators/LoggedOutNav";
@@ -29,22 +28,23 @@ export default function App() {
     const fontPromises = fontsToLoad.map((font) => Font.loadAsync(font));
     const imagesToLoad = [
       require("./assets/glLogo.png"),
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/840px-Instagram_logo.svg.png",
+      "https://upload.wikimedia.org/w¡ikipedia/commons/thumb/2/2a/Instagram_logo.svg/840px-Instagram_logo.svg.png",
     ];
     const imagePromises = imagesToLoad.map((image) => Asset.loadAsync(image));
     return Promise.all([...fontPromises, ...imagePromises]);
   };
 
-  const preload = async () => {
+  const preload = async ()=> {
     const token = await AsyncStorage.getItem("token");
     if (token) {
       console.log("token : ", token);
       isLoggedInVar(true);
       tokenVar(token);
     }
-
     return startLoading();
   };
+
+
 
   useEffect(() => {
     async function prepare() {

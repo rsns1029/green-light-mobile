@@ -18,6 +18,9 @@ const ButtonText = styled.Text`
   text-align: center;
 `;
 
+
+
+
 export default function AuthButton({ onPress, disabled, text, loading }) {
   return (
     <Button disabled={disabled} onPress={onPress}>
